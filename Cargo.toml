@@ -1,0 +1,27 @@
+[package]
+name = "sampling-algo"
+version = "0.1.0"
+edition = "2021"
+description = "Implementation of various sampling algorithms for practice and learning"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/yourusername/sampling-algo"
+
+[dependencies]
+rand = "0.8"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "sampling_bench"
+harness = false
+
+[[example]]
+name = "demo"
+path = "examples/demo.rs"
+
+[lib]
+name = "sampling_algo"
+path = "src/lib.rs"
