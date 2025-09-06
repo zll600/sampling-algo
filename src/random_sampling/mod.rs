@@ -13,7 +13,7 @@
 //! without relying on high-level library abstractions.
 
 pub mod simple;
-// pub mod stratified;
+pub mod stratified;
 // pub mod systematic;
 // pub mod reservoir;
 // pub mod weighted;
@@ -21,7 +21,7 @@ pub mod simple;
 
 // Re-export commonly used functions
 pub use simple::*;
-// pub use stratified::*;
+pub use stratified::*;
 // pub use systematic::*;
 // pub use reservoir::*;
 // pub use weighted::*;

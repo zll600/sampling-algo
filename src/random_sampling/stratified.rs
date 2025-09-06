@@ -26,8 +26,6 @@
 //! ```
 
 use std::collections::HashMap;
-use rand::{Rng, SeedableRng};
-use rand::rngs::StdRng;
 use crate::random_sampling::{SamplingError, SamplingResult};
 use crate::random_sampling::simple::simple_random_sample;
 
@@ -40,13 +38,6 @@ pub enum AllocationMethod {
     Equal,
     /// Optimal allocation for minimizing variance (requires stratum variances)
     Optimal(Vec<f64>), // stratum standard deviations
-}
-
-/// Stratum information for internal use
-#[derive(Debug, Clone)]
-struct Stratum<T> {
-    data: Vec<T>,
-    allocation: usize,
 }
 
 /// Perform stratified sampling.
@@ -111,12 +102,6 @@ where
     if sample_size == 0 {
         return Ok(Vec::new());
     }
-    
-    // Initialize RNG
-    let mut rng = match seed {
-        Some(s) => StdRng::seed_from_u64(s),
-        None => StdRng::from_entropy(),
-    };
     
     // Group data by strata
     let mut strata_map: HashMap<S, Vec<T>> = HashMap::new();
@@ -208,7 +193,7 @@ where
             let remainder = sample_size % strata_count;
             
             let mut extra_assigned = 0;
-            for (i, (stratum, stratum_data)) in strata_map.iter().enumerate() {
+            for (_i, (stratum, stratum_data)) in strata_map.iter().enumerate() {
                 let mut stratum_allocation = base_allocation;
                 
                 // Distribute remainder among first few strata
@@ -268,7 +253,7 @@ where
 /// Simple hash function for generating stratum-specific seeds
 fn hash_stratum<S: std::hash::Hash>(stratum: &S) -> u64 {
     use std::collections::hash_map::DefaultHasher;
-    use std::hash::{Hash, Hasher};
+    use std::hash::Hasher;
     
     let mut hasher = DefaultHasher::new();
     stratum.hash(&mut hasher);
@@ -356,8 +341,12 @@ mod tests {
         let data = vec![1, 2, 3, 4, 5, 6, 7, 8];
         let strata = vec!["A", "A", "B", "B", "C", "C", "D", "D"];
         
-        let sample1 = stratified_sample(&data, &strata, 4, AllocationMethod::Proportional, Some(42)).unwrap();
-        let sample2 = stratified_sample(&data, &strata, 4, AllocationMethod::Proportional, Some(42)).unwrap();
+        let mut sample1 = stratified_sample(&data, &strata, 4, AllocationMethod::Proportional, Some(42)).unwrap();
+        let mut sample2 = stratified_sample(&data, &strata, 4, AllocationMethod::Proportional, Some(42)).unwrap();
+        
+        // Sort both samples before comparison since HashMap iteration order may vary
+        sample1.sort();
+        sample2.sort();
         
         assert_eq!(sample1, sample2);
     }
