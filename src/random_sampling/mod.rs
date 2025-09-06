@@ -1,14 +1,14 @@
 //! Random Sampling Algorithms
-//! 
+//!
 //! This module contains implementations of various random sampling techniques:
-//! 
+//!
 //! - **Simple Random Sampling**: Basic random sampling without replacement
 //! - **Stratified Sampling**: Sampling that preserves population strata proportions
 //! - **Systematic Sampling**: Sampling at regular intervals
 //! - **Reservoir Sampling**: Streaming algorithm for unknown population size
 //! - **Weighted Sampling**: Probability-proportional-to-size sampling
 //! - **Time Series Sampling**: Temporal-aware sampling methods
-//! 
+//!
 //! Each algorithm is implemented from scratch to demonstrate the underlying mechanics
 //! without relying on high-level library abstractions.
 
@@ -46,7 +46,9 @@ impl std::fmt::Display for SamplingError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             SamplingError::NegativeSampleSize => write!(f, "Sample size cannot be negative"),
-            SamplingError::SampleSizeTooLarge => write!(f, "Sample size cannot exceed population size"),
+            SamplingError::SampleSizeTooLarge => {
+                write!(f, "Sample size cannot exceed population size")
+            }
             SamplingError::InvalidParameters(msg) => write!(f, "Invalid parameters: {}", msg),
             SamplingError::EmptyPopulation => write!(f, "Population cannot be empty"),
             SamplingError::MismatchedInputs => write!(f, "Input arrays have mismatched lengths"),
