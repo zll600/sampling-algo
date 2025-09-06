@@ -16,16 +16,16 @@ pub mod reservoir;
 pub mod simple;
 pub mod stratified;
 pub mod systematic;
+pub mod time_series;
 pub mod weighted;
-// pub mod time_series;
 
 // Re-export commonly used functions
 pub use reservoir::*;
 pub use simple::*;
 pub use stratified::*;
 pub use systematic::*;
+pub use time_series::*;
 pub use weighted::*;
-// pub use time_series::*;
 
 /// Common error types for sampling algorithms
 #[derive(Debug, PartialEq, Clone)]
